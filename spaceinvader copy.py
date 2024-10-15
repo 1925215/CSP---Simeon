@@ -1,12 +1,10 @@
 import turtle as trtl
 import time
 
-
 # Set up the screen
 screen = trtl.Screen()
 screen.title("Space Invaders")
 screen.setup(width=800, height=600)
-
 
 # Set up the screen
 screen = trtl.Screen()
@@ -15,21 +13,16 @@ screen.setup(width=800, height=600)
 # background picture
 screen.bgpic("space.gif")
 
-
 background_turtle = trtl.Turtle()
 background_turtle.hideturtle()
 background_turtle.speed(0)
-
 
 # Score and Timer variables
 score = 0
 start_time = time.time()
 game_duration = 60  # Game lasts for 60 seconds
 
-# Scoreboard and timer display
-
 space_image = "spaceship.gif"
-
 alien_image = "spaceinvaderalien.gif"
 
 wn = trtl.Screen()
@@ -81,7 +74,8 @@ def right():
   spaceship.forward(speed)
 
 def shoot():
-    global timer,i
+    global timer,i,score
+    bruh=0
     if timer == 0:
       timer = 1
       temp_turtle = trtl.Turtle()
@@ -98,15 +92,26 @@ def shoot():
       bullets[i].setheading(90)
       bullets[i].st()
       bullets[i].speed(0)
-      x = 0
-      bullet_coord = bullets[i].pos()
-      while x < 1000:
-        bullets[i].forward(1)
-        for each in coordinates:
-           bullets[i].coord[0] - coordinates[0]
-        if (bullets[i].pos() in coordinates) or (bullets[i].pos() in coordinates) or (bullets[i].pos() in coordinates):
-            print("hit")
-        bullet_coord[0]+1
+      coordinates = []
+      for t in aliens:
+        coordinates.append(t.pos())
+      while bruh < 200:
+        index = 0
+        bullet_coord = bullets[i].pos()
+        bullets[i].forward(5)
+        bruh = bruh+1
+        for every in aliens:
+          first = coordinates[index]
+          m = first[0]
+          n = first[1]
+          if (abs(bullet_coord[0]- m) < 25) and (abs(bullet_coord[1] - n) < 25):
+            aliens[index].ht()
+            score=score+1
+            timer=0
+            bullets[i].ht()
+            return
+            
+          index = index +1
 
       i = i+1
       timer = 0
@@ -119,7 +124,7 @@ def update_scoreboard():
     timer_display.write(f"Time: {int(remaining_time)}", align="right", font=("Courier", 24, "normal"))
 
 for step in range(4):
-  while number_of_aliens < 20:
+  while number_of_aliens <= 20:
     temp_alien = trtl.Turtle()
     temp_alien.speed(0)
     temp_alien.pu()
@@ -134,15 +139,10 @@ for step in range(4):
   y = y - 60
   x = -600
 
+draw_ship(spaceship)
 coordinates = []
 for t in aliens:
   coordinates.append(t.pos())
-
-a,b,c,d,e,f,g,h,j,k,l,m,n,o,p,q,r,s,u,v,w,z,qq,ww,ee,rr,tt,yy,uu,ii,oo,pp,aa,ss,dd,ff,gg,hh,jj,kk,ll,zz,xx,cc,vv,bb,nn,mm,qqq,www,eee,rrr,ttt,yyy,uuu,iii,ooo,aaa,sss,ddd,ppp,fff,ggg,hhh,jjj,kkk,lll,zzz,xxx,ccc,vvv,bbb,nnn,mmm,qqqq,wwww,eeee,rrrr,tttt,yyyy = coordinates
-print(coordinates[0])
-
-draw_ship(spaceship)
-
 scoreboard = trtl.Turtle()
 scoreboard.color("white")
 scoreboard.penup()
@@ -171,8 +171,27 @@ while start_game:
     wn.onkeypress(right,"Right")
     wn.onkeypress(shoot," ")
     wn.listen()
+    index = 0
+    for every in aliens:
+       first = coordinates[index]
+       t = first[0]
+       u = first[1]
+       t = t + 5
+       u = u - 5
+       aliens[index].goto(t,u)
+       index = index + 1
+    index = 0
+    for every in aliens:
+       first = coordinates[index]
+       t = first[0]
+       u = first[1]
+       t = t - 5
+       u = u - 5
+       aliens[index].goto(t,u)
+       index = index + 1
+
     if time.time() - start_time < game_duration:
-        score += 1  # Increase score every frame (for testing)
+        print("nice") # Increase score every frame (for testing)
     else:
         start_game = False  # End game after time runs out
     screen.update()
